@@ -28,8 +28,6 @@ class BrickBreaker extends FlameGame
   FutureOr<void> onLoad() async {
     super.onLoad();
 
-    camera.viewfinder.anchor = Anchor.topLeft;
-
     world.add(PlayArea());
 
     world.add(
@@ -42,6 +40,7 @@ class BrickBreaker extends FlameGame
                 height * 0.2,
               ).normalized()
               ..scale(height / 4),
+        difficultyModifier: difficultyModifier,
       ),
     );
 
@@ -52,6 +51,18 @@ class BrickBreaker extends FlameGame
         position: Vector2(width / 2, height * 0.95),
       ),
     );
+
+    await world.addAll([
+      for (var i = 0; i < brickColors.length; i++)
+        for (var j = 1; j <= 5; j++)
+          Brick(
+            position: Vector2(
+              (i + 0.5) * brickWidth + (i + 1) * brickGutter,
+              (j + 2.0) * brickHeight + j * brickGutter,
+            ),
+            color: brickColors[i],
+          ),
+    ]);
 
     debugMode = true;
   }
